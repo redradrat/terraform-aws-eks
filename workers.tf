@@ -59,11 +59,12 @@ resource "aws_launch_configuration" "workers" {
 }
 
 resource "aws_security_group" "workers" {
-  name_prefix = "${aws_eks_cluster.this.name}"
-  description = "Security group for all nodes in the cluster."
-  vpc_id      = "${var.vpc_id}"
-  count       = "${var.worker_create_security_group ? 1 : 0}"
-  tags        = "${merge(var.tags, map("Name", "${aws_eks_cluster.this.name}-eks_worker_sg", "kubernetes.io/cluster/${aws_eks_cluster.this.name}", "owned"
+  name_prefix            = "${aws_eks_cluster.this.name}"
+  description            = "Security group for all nodes in the cluster."
+  revoke_rules_on_delete = true
+  vpc_id                 = "${var.vpc_id}"
+  count                  = "${var.worker_create_security_group ? 1 : 0}"
+  tags                   = "${merge(var.tags, map("Name", "${aws_eks_cluster.this.name}-eks_worker_sg", "kubernetes.io/cluster/${aws_eks_cluster.this.name}", "owned"
   ))}"
 }
 
